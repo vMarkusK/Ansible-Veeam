@@ -1,17 +1,8 @@
-- name: VBR Setup
+- name: VBR Community Edition Setup
   hosts: veeam
   gather_facts: yes
   vars:
     vbr_source: "D:\\"
-    vbr_licensefile: "C:\\_install\\veeam.lic"
-    vbr_username: "svc_veeam"
-    vbr_userpassword: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          35653031363435313265656530613736653466363031636430336561626332313065333134313462
-          3434626463306661653136343733393437393233306166360a366532646266343738373961626162
-          65386636363638343132303864303935386238643639643862356339333736383430346237623035
-          3235373931373634650a633939616662316230633538393162623333613439383262376238623934
-          3965
     sql_username: "svc_sql"
     sql_userpassword: !vault |
           $ANSIBLE_VAULT;1.1;AES256
@@ -28,15 +19,6 @@
           3235373931373634650a633939616662316230633538393162623333613439383262376238623934
           3965
   tasks:
-  - name: Pre - Create Local Veeam User
-    win_user:
-        name: "{{ vbr_username }}"
-        password: "{{ vbr_userpassword }}"
-        password_never_expires: yes
-        state: present
-        groups:
-            - Administrators
-    tags: pre
   - name: Pre - Install 2012 System CLR Types
     win_package:
         path: "{{ vbr_source }}Redistr\\x64\\SQLSysClrTypes.msi"
