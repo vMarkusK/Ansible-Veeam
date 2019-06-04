@@ -1,0 +1,10 @@
+{
+    "ansible.fileCopyConfig": [
+        {
+            "server": "10.0.2.15",
+            "sourcePath": "c:\\Users\\marku\\Documents\\GitHub\\Ansible-Veeam/",
+            "targetPath": "Ansible-Veeam/",
+            "copyOnSave": true
+        }
+    ]
+}

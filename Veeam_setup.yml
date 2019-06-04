@@ -1,0 +1,99 @@
+- name: VBR Setup
+  hosts: veeam
+  gather_facts: yes
+  vars:
+    vbr_source: "D:\\"
+    vbr_licensefile: "C:\\_install\\veeam.lic"
+    vbr_username: "svc_veeam"
+    vbr_userpassword: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          35653031363435313265656530613736653466363031636430336561626332313065333134313462
+          3434626463306661653136343733393437393233306166360a366532646266343738373961626162
+          65386636363638343132303864303935386238643639643862356339333736383430346237623035
+          3235373931373634650a633939616662316230633538393162623333613439383262376238623934
+          3965
+    sql_username: "svc_sql"
+    sql_userpassword: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          35653031363435313265656530613736653466363031636430336561626332313065333134313462
+          3434626463306661653136343733393437393233306166360a366532646266343738373961626162
+          65386636363638343132303864303935386238643639643862356339333736383430346237623035
+          3235373931373634650a633939616662316230633538393162623333613439383262376238623934
+          3965
+    sql_sapassword: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          35653031363435313265656530613736653466363031636430336561626332313065333134313462
+          3434626463306661653136343733393437393233306166360a366532646266343738373961626162
+          65386636363638343132303864303935386238643639643862356339333736383430346237623035
+          3235373931373634650a633939616662316230633538393162623333613439383262376238623934
+          3965
+  tasks:
+  - name: Pre - Create Local Veeam User
+    win_user:
+        name: "{{ vbr_username }}"
+        password: "{{ vbr_userpassword }}"
+        password_never_expires: yes
+        state: present
+        groups:
+            - Administrators
+    tags: pre
+  - name: Pre - Install 2012 System CLR Types
+    win_package:
+        path: "{{ vbr_source }}Redistr\\x64\\SQLSysClrTypes.msi"
+        state: present
+    tags: pre
+  - name: Pre - Install 2012 Shared management objects
+    win_package:
+        path: "{{ vbr_source }}Redistr\\x64\\SharedManagementObjects.msi"
+        state: present
+    tags: pre
+  - name: SQL - Create Local SQL User
+    win_user:
+        name: "{{ sql_username }}"
+        password: "{{ sql_userpassword }}"
+        password_never_expires: yes
+        state: present
+        groups:
+            - Users
+    tags: pre
+  - name: SQL - Install SQL 2016 Express
+    win_package:
+        path: "{{ vbr_source }}Redistr\\x64\\SqlExpress\\2016SP1\\SQLEXPR_x64_ENU.exe"
+        product_id: SQL 2016 Express
+        arguments: 
+        - '/q'
+        - '/ACTION=Install'
+        - '/IACCEPTSQLSERVERLICENSETERMS' 
+        - '/FEATURES=SQL' 
+        - '/INSTANCENAME=VEEAMSQL2016'
+        - '/SQLSVCACCOUNT={{ sql_username }}'
+        - '/SQLSVCPASSWORD={{ sql_userpassword }}'
+        - '/SECURITYMODE=SQL'
+        - '/SAPWD={{ sql_sapassword }}'
+        - '/ADDCURRENTUSERASSQLADMIN'
+        - '/UPDATEENABLED=0'
+        - '/TCPENABLED=1'
+        - '/NPENABLED=1'
+    tags: sql
+  - name: Install VBR Catalog
+    win_package:
+        path: "{{ vbr_source }}Catalog\\VeeamBackupCatalog64.msi"
+        state: present
+        arguments:
+            - 'VBRC_SERVICE_ACCOUNT_TYPE=1'
+            - 'ACCEPT_THIRDPARTY_LICENSES=1'
+    tags: vbr
+  - name: Install VBR Server
+    win_package:
+        path: "{{ vbr_source }}Backup\\Server.x64.msi"
+        state: present
+        arguments: "VBR_SERVICE_ACCOUNT_TYPE=1 VBR_SQLSERVER_AUTHENTICATION=1 VBR_SQLSERVER_SERVER=(local)\\VEEAMSQL2016 VBR_SQLSERVER_USERNAME=sa VBR_SQLSERVER_PASSWORD={{ sql_sapassword }} ACCEPT_THIRDPARTY_LICENSES=1 ACCEPTEULA=YES"
+    tags: vbr
+  - name: Install VBR Console
+    win_package:
+        path: "{{ vbr_source }}Backup\\Shell.x64.msi"
+        state: present
+        arguments:
+            - 'ACCEPTEULA=YES'
+            - 'ACCEPT_THIRDPARTY_LICENSES=1'
+    tags: vbr
