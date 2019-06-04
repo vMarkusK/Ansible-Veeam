@@ -119,4 +119,11 @@
             - 'ACCEPT_EULA=1'
             - 'ACCEPT_THIRDPARTY_LICENSES=1'
     tags: vbr
+  - name: Install VBR Update 4a
+    win_package:
+        path: "{{ vbr_source }}Updates\\veeam_backup_9.5.4.2753.update4a_setup.exe"
+        product_id: VBR Update 4a
+        arguments: "/silent /noreboot VBR_AUTO_UPGRADE=1"
+    tags: update
+
 
