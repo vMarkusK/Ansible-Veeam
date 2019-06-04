@@ -15,3 +15,8 @@ MY CLOUD-(R)EVOLUTION [mycloudrevolution.com](http://mycloudrevolution.com/)
 ### Veeam_setup.yml
 
 Install Veeam Backup & Replication 9.5 Update 4a in the unattended mode with Ansible. 
+
+Test / Dev Environment:
+ * Ansible 2.8
+ * CentOS 7
+ * Windows Server 2019
