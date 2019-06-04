@@ -97,3 +97,44 @@
             - 'ACCEPTEULA=YES'
             - 'ACCEPT_THIRDPARTY_LICENSES=1'
     tags: vbr
+  - name: Install VBR Explorer for ActiveDirectory
+    win_package:
+        path: "{{ vbr_source }}Explorers\\VeeamExplorerForActiveDirectory.msi"
+        state: present
+        arguments:
+            - 'ACCEPT_EULA=1'
+            - 'ACCEPT_THIRDPARTY_LICENSES=1'
+    tags: vbr
+  - name: Install VBR Explorer for Exchange
+    win_package:
+        path: "{{ vbr_source }}Explorers\\VeeamExplorerForExchange.msi"
+        state: present
+        arguments:
+            - 'ACCEPT_EULA=1'
+            - 'ACCEPT_THIRDPARTY_LICENSES=1'
+    tags: vbr
+  - name: Install VBR Explorer for Oracle
+    win_package:
+        path: "{{ vbr_source }}Explorers\\VeeamExplorerForOracle.msi"
+        state: present
+        arguments:
+            - 'ACCEPT_EULA=1'
+            - 'ACCEPT_THIRDPARTY_LICENSES=1'
+    tags: vbr
+  - name: Install VBR Explorer for SharePoint
+    win_package:
+        path: "{{ vbr_source }}Explorers\\VeeamExplorerForSharePoint.msi"
+        state: present
+        arguments:
+            - 'ACCEPT_EULA=1'
+            - 'ACCEPT_THIRDPARTY_LICENSES=1'
+    tags: vbr
+  - name: Install VBR Explorer for SQL
+    win_package:
+        path: "{{ vbr_source }}Explorers\\VeeamExplorerForSQL.msi"
+        state: present
+        arguments:
+            - 'ACCEPT_EULA=1'
+            - 'ACCEPT_THIRDPARTY_LICENSES=1'
+    tags: vbr
+
