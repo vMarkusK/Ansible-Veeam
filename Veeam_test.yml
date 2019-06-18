@@ -1,0 +1,6 @@
+- name: VBR Module Tests
+  hosts: veeam
+  gather_facts: no
+  tasks:
+  - name: Get Veeam Connection
+    veeam_connection_facts:
