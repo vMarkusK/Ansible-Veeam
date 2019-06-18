@@ -2,5 +2,5 @@
   hosts: veeam
   gather_facts: no
   tasks:
-  - name: Get Veeam Connection
+  - name: Get Veeam Facts
     veeam_connection_facts:

@@ -26,6 +26,16 @@ Function Connect-VeeamServer {
         Fail-Json -obj @{} -message "Failed to connect VBR Server on the target: $($_.Exception.Message)"  
     }
 }
+Function Disconnect-VeeamServer {
+    try {
+        Disconnect-VBRServer
+    }
+    catch {
+        Fail-Json -obj @{} -message "Failed to disconnect VBR Server on the target: $($_.Exception.Message)"  
+    }
+}
+
+# Connect
 Connect-VeeamServer
 
 # Create a new result object
@@ -33,6 +43,8 @@ $result = @{
     changed = $false
     veeam_facts = @{
         veeam_connection = @()
+        veeam_repositories = @()
+        veeam_servers = @()
     }
 }
 
@@ -43,6 +55,23 @@ try {
     Fail-Json -obj $result -message "Failed to get connection details on the target: $($_.Exception.Message)"
 }
 
+# Get Veeam Server
+try {
+    [Array]$ServerList = Get-VBRServer
+}
+catch {
+    Fail-Json -obj $result -message "Failed to get server details on the target: $($_.Exception.Message)"   
+}
+
+# Get Veeam Repositories
+try {
+    [Array]$RepoList = Get-VBRBackupRepository | Where-Object {$_.Type -ne "SanSnapshotOnly"} 
+}
+catch {
+    Fail-Json -obj $result -message "Failed to get repository details on the target: $($_.Exception.Message)"   
+}
+
+
 # Create result
 $connection_info = @{}
 $connection_info["user"] = $Connection.user
@@ -50,6 +79,30 @@ $connection_info["server"] = $Connection.server
 $connection_info["port"] = $Connection.port
 
 $result.veeam_facts.veeam_connection += $connection_info
+
+foreach ($Repo in $RepoList) {
+    $repo_info = @{}
+    $repo_info["name"] = $repo.name
+    $repo_info["type"] = $repo.typedisplay
+    $repo_info["host"] = $($ServerList | Where-Object {$_.Id -eq $repo.HostId}).name
+    $repo_info["friendlypath"] = $repo.friendlypath
+    $repo_info["description"] = $repo.description
+
+    $result.veeam_facts.veeam_repositories += $repo_info
+}
+
+foreach ($Server in $ServerList) {
+    $server_info = @{}
+    $server_info["id"] = $server.id
+    $server_info["name"] = $server.name
+    $server_info["description"] = $server.description
+    $server_info["type"] = $server.info.typedescription
+
+    $result.veeam_facts.veeam_servers += $server_info
+}
+
+# Disconnect
+Disconnect-VeeamServer
 
 # Return result
 Exit-Json -obj $result

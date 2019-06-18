@@ -26,9 +26,11 @@ author:
 '''
 
 EXAMPLES = r'''
--
+---
+
 '''
 
 RETURN = r'''
--
+----
+
 '''
