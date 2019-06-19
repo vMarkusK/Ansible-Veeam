@@ -4,3 +4,7 @@
   tasks:
   - name: Get Veeam Facts
     veeam_connection_facts:
+    register: my_facts
+  - name: Debug Veeam Facts
+    debug:
+        var: my_facts

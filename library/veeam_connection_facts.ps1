@@ -45,6 +45,7 @@ $result = @{
         veeam_connection = @()
         veeam_repositories = @()
         veeam_servers = @()
+        veeam_credentials = @()
     }
 }
 
@@ -69,6 +70,15 @@ try {
 }
 catch {
     Fail-Json -obj $result -message "Failed to get repository details on the target: $($_.Exception.Message)"   
+}
+
+# Get Veeam Credentials
+try {
+    [Array]$CredList = Get-VBRCredentials    
+}
+catch {
+    Fail-Json -obj $result -message "Failed to get credential details on the target: $($_.Exception.Message)"   
+    
 }
 
 
@@ -99,6 +109,18 @@ foreach ($Server in $ServerList) {
     $server_info["type"] = $server.info.typedescription
 
     $result.veeam_facts.veeam_servers += $server_info
+}
+
+foreach ($Cred in $CredList) {
+    $cred_info = @{}
+    $cred_info["id"] = $cred.id
+    $cred_info["name"] = $cred.name
+    $cred_info["username"] = $cred.username
+    $cred_info["encryptedpassword"] = $cred.encryptedpassword
+    $cred_info["description"] = $cred.description
+
+
+    $result.veeam_facts.veeam_credentials += $cred_info
 }
 
 # Disconnect
