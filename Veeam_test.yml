@@ -8,3 +8,10 @@
   - name: Debug Veeam Facts
     debug:
         var: my_facts
+  - name: Add credential
+    veeam_credential:
+        state: present
+        type: windows
+        username: Administrator
+        password: ChangeMe
+        description: dummy description
