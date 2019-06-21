@@ -9,15 +9,16 @@
 
 $spec = @{
     options = @{
-        type = @{ type = "str"; choices = "windows", "linux"; required = $true }
-        username = @{ type = "str"; required = $true }
-        password = @{ type = "str"; required = $true }
+        type = @{ type = "str"; choices = "windows", "linux" }
+        username = @{ type = "str" }
+        password = @{ type = "str" }
         state = @{ type = "str"; choices = "absent", "present"; default = "present" }
         description = @{ type = "str"; default = "Created by Ansible"}
         id = @{ type = "str"}
 
     }
-    required_if = @(,@("state", "present", @("username")))
+    required_if = @(@("state", "present", @("username", "password")),
+                    @("state", "absent", @("id")))
     supports_check_mode = $true
 }
 
@@ -60,6 +61,10 @@ switch ( $module.Params.state) {
                 $module.Result.changed = $true
                 $module.Result.id = $Cred.id
                 }
+    "absent" { $RemoveCred = Get-VBRCredentials | Where-Object {$_.id -eq $module.Params.id}
+               $Cred = Remove-VBRCredentials -Credential $RemoveCred
+               $module.Result.changed = $true
+            }
     Default {}
 }
 

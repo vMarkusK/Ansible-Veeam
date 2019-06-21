@@ -15,3 +15,11 @@
         username: Administrator
         password: ChangeMe
         description: dummy description
+    register: my_cred
+  - name: Debug Veeam Credentials
+    debug:
+        var: my_cred
+  - name: Remove credential
+    veeam_credential:
+        state: absent
+        id: "{{ my_cred.id }}"
