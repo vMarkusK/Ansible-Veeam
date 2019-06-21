@@ -9,7 +9,7 @@
 
 $spec = @{
     options = @{
-        type = @{ type = "str"; choices = "windows", "linux" }
+        type = @{ type = "str"; choices = "windows", "linux"; default = "windows" }
         username = @{ type = "str" }
         password = @{ type = "str" }
         state = @{ type = "str"; choices = "absent", "present"; default = "present" }
