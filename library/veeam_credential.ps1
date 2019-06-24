@@ -9,7 +9,7 @@
 
 $spec = @{
     options = @{
-        type = @{ type = "str"; choices = "windows", "linux"; default = "windows" }
+        type = @{ type = "str"; choices = "windows", "linux", "standard"; default = "standard" }
         username = @{ type = "str" }
         password = @{ type = "str" }
         state = @{ type = "str"; choices = "absent", "present"; default = "present" }
@@ -57,7 +57,12 @@ Function Disconnect-VeeamServer {
 Connect-VeeamServer
 
 switch ( $module.Params.state) {
-    "present" { $Cred = Add-VBRCredentials -Type $module.Params.type -User $module.Params.username -Password "$($module.Params.password)" -Description "$($module.Params.description)"
+    "present" { if ($module.Params.type -eq "standard") {
+                    $Cred = Add-VBRCredentials -User $module.Params.username -Password "$($module.Params.password)" -Description "$($module.Params.description)"
+                    }
+                    else {
+                        $Cred = Add-VBRCredentials -Type $module.Params.type -User $module.Params.username -Password "$($module.Params.password)" -Description "$($module.Params.description)"
+                    }
                 $module.Result.changed = $true
                 $module.Result.id = $Cred.id
                 }

@@ -33,11 +33,12 @@ options:
     default: present
   type:
     description:
-    - Set to C(windows) to create new credentials.
-    - Set to C(linux) to remove credentials by id.
+    - Set to C(windows) to create new windows credentials.
+    - Set to C(liniux) to create new liniux credentials.
+    - Set to C(standard) to create new standard credentials.
     type: str
-    choices: [ windows, linux ]
-    default: windows
+    choices: [ windows, linux, standard ]
+    default: standard
   username:
     description:
     -  The username
