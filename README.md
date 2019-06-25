@@ -67,19 +67,28 @@ Add and remove credentials on your Veeam Backup & Replication Server.
 
 #### Add, debug and remove credentials
 
+ ![Veeam Add Credentials ](/media/VeeamAddCred.png)
+
 ```
-  - name: Add credential
+  tasks:
+  - name: Add Credential
     veeam_credential:
         state: present
         type: windows
         username: Administrator
         password: "{{ my_password }}"
-        description: dummy description
+        description: My dummy description
     register: my_cred
   - name: Debug Veeam Credentials
     debug:
         var: my_cred
-  - name: Remove credential
+  - name: Get Veeam Facts
+    veeam_connection_facts:
+    register: my_facts
+  - name: Debug Veeam Credential Facts
+    debug:
+        var: my_facts  | json_query(query)
+  - name: Remove Credential
     veeam_credential:
         state: absent
         id: "{{ my_cred.id }}"

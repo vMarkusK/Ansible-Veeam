@@ -1,0 +1,34 @@
+- name: Add new Credentials to VBR Server
+  hosts: veeam
+  gather_facts: no
+  vars:
+    query: "veeam_facts.veeam_credentials[?id=='{{ my_cred.id }}']"
+    my_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          33363664383130323638626433633661333933363632346635626366363861356438356463653539
+          3462316232646265343236613632646636353265666662380a363735353638343836323263373430
+          33376230633166383436633463623662366462653864396663623731613364343264353965363361
+          3239613266376234370a646532663735356162653263333461633437626438313962616530363439
+          3166
+  tasks:
+  - name: Add Credential
+    veeam_credential:
+        state: present
+        type: windows
+        username: Administrator
+        password: "{{ my_password }}"
+        description: My dummy description
+    register: my_cred
+  - name: Debug Veeam Credentials
+    debug:
+        var: my_cred
+  - name: Get Veeam Facts
+    veeam_connection_facts:
+    register: my_facts
+  - name: Debug Veeam Credential Facts
+    debug:
+        var: my_facts  | json_query(query)
+  - name: Remove Credential
+    veeam_credential:
+        state: absent
+        id: "{{ my_cred.id }}"
