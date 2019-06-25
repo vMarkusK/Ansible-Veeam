@@ -6,7 +6,7 @@
 
 Besides an Ansible Playbook for the unattended installation of Veeam Backup & Replication servers, this repository contains my Ansible modules for the management of Veeam Backup & Replication.
 
-The Veeam modules are based on the Veeam PS cmdlets. 
+The Veeam modules are based on the Veeam PowerShell cmdlets ([Veeam PowerShell Reference](https://helpcenter.veeam.com/docs/backup/powershell/cmdlets.html?ver=95u4)). All modules are designed to be executed on a Veeam Veeam Backup & Replication server with installed console and PowerShell Snapin, no remote connection.
 
 ### Project Owner
 
