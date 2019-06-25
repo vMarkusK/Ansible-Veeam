@@ -9,7 +9,7 @@
 
 $spec = @{
     options = @{
-        type = @{ type = "str"; choices = "esxi", "vcenter"; default = "esxi" }
+        type = @{ type = "str"; choices = "esxi", "vcenter", "windows"; default = "esxi" }
         credential_id = @{ type = "str" }
         state = @{ type = "str"; choices = "absent", "present"; default = "present" }
         name = @{ type = "str" }
@@ -62,11 +62,15 @@ switch ( $module.Params.state) {
                                     $module.Result.changed = $true
                                     $module.Result.id = $Server.id  
                                 }
-                        Default {}
+                        "vcenter" {Fail-Json -obj @{} -message "Type not yet implemented."
+                                    }
+                        "windows" {Fail-Json -obj @{} -message "Type not yet implemented."
+                                    }
+                        Default { }
                     }
                 }
-    "absent" { #TBD
-            }
+    "absent" { Fail-Json -obj @{} -message "State not yet implemented."
+                }
     Default {}
 }
 
