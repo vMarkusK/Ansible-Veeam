@@ -10,12 +10,6 @@
           6364356265613533380a643834643531663230653365303163363338396266613162663465313433
           31353563386237636330343933643566663536326634356136643839356463346161
   tasks:
-  - name: Get Veeam Facts
-    veeam_connection_facts:
-    register: my_facts
-  - name: Debug Veeam Facts
-    debug:
-        var: my_facts
   - name: Add root credential
     veeam_credential:
         state: present
@@ -34,3 +28,9 @@
         credential_id: "{{ root_cred.id }}"
         name: 192.168.234.101
     register: esxi_server
+  - name: Get Veeam Facts
+    veeam_connection_facts:
+    register: my_facts
+  - name: Debug Veeam Servers from Facts
+    debug:
+        var: my_facts.veeam_facts.veeam_servers
