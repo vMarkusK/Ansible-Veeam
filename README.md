@@ -20,13 +20,68 @@ MY CLOUD-(R)EVOLUTION [mycloudrevolution.com](http://mycloudrevolution.com/)
 
 Collect configuration details from your Veeam Backup & Replication Server.
 
+Playbook tasks:
+
 ```
+  tasks:
   - name: Get Veeam Facts
     veeam_connection_facts:
     register: my_facts
   - name: Debug Veeam Facts
     debug:
         var: my_facts
+```
+
+Return (Example):
+
+```
+ok: [10.0.2.16] => {
+    "my_facts": {
+        "changed": false,
+        "failed": false,
+        "veeam_facts": {
+            "veeam_connection": [
+                {
+                    "port": 9392,
+                    "server": "localhost",
+                    "user": "VEEAM01\\Administrator"
+                }
+            ],
+            "veeam_credentials": [
+                {
+                    "description": "Lab User for Standalone Host",
+                    "encryptedpassword": null,
+                    "id": "ae0fa0f8-d0ed-4014-9e0c-b84d56bc9084",
+                    "name": "root",
+                    "username": "root"
+                }
+            ],
+            "veeam_repositories": [
+                {
+                    "description": "Created by Veeam Backup",
+                    "friendlypath": "C:\\Backup",
+                    "host": "Veeam01",
+                    "name": "Default Backup Repository",
+                    "type": "Windows"
+                }
+            ],
+            "veeam_servers": [
+                {
+                    "description": "Backup server",
+                    "id": "6745a759-2205-4cd2-b172-8ec8f7e60ef8",
+                    "name": "Veeam01",
+                    "type": "Microsoft Windows Server"
+                },
+                {
+                    "description": "Created by Powershell at 25.06.2019 22:39:24.",
+                    "id": "aedd0693-657c-4384-9e53-cd6bb605a637",
+                    "name": "192.168.234.101",
+                    "type": "VMware ESXi Server"
+                }
+            ]
+        }
+    }
+}
 ```
 
 ### Module - veeam_credential
