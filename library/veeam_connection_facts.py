@@ -11,7 +11,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = r'''
 ---
 module: veeam_connection_facts
-version_added: '2.5'
+version_added: '0.3'
 short_description: Show the Veeam Connection Details
 description:
    - With the module you can show the Veeam Connection details.
@@ -26,8 +26,13 @@ author:
 '''
 
 EXAMPLES = r'''
----
-
+  tasks:
+  - name: Get Veeam Facts
+    veeam_connection_facts:
+    register: my_facts
+  - name: Debug Veeam Facts
+    debug:
+        var: my_facts
 '''
 
 RETURN = r'''
