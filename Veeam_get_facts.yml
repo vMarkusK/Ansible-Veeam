@@ -1,0 +1,10 @@
+- name: Get all VBR Facts
+  hosts: veeam
+  gather_facts: no
+  tasks:
+  - name: Get Veeam Facts
+    veeam_connection_facts:
+    register: my_facts
+  - name: Debug Veeam Facts
+    debug:
+        var: my_facts
