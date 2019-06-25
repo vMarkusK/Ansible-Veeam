@@ -35,10 +35,41 @@ options:
     type: str
     choices: [ absent, present ]
     default: present
+  type:
+    description:
+    - Set to C(esxi) to add or remove a VMware ESXi Server.
+    - Set to C(vcenter) to add or remove a VMware vCenter Server.
+    - Set to C(windows) to add or remove a Windows Server.
+    type: str
+    choices: [ esxi, vcenter, windows ]
+    default: esxi
+  credential_id:
+    description:
+    - Id of the Crendetials for the new Server.
+    - use veeam_credential module to create a new one.
+    type: str
+  name:
+    description:
+    - IP or FQDN of the new Server.
+    type: str
 '''
 
 EXAMPLES = r'''
--
+- name: Add root credential
+  veeam_credential:
+      state: present
+      type: standard
+      username: root
+      password: "{{ root_password }}"
+      description: "Lab User for Standalone Host"
+  register: root_cred
+- name: Add esxi server
+  veeam_server:
+      state: present
+      type: esxi
+      credential_id: "{{ root_cred.id }}"
+      name: 192.168.234.101
+  register: esxi_server
 '''
 
 RETURN = r'''
