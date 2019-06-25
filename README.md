@@ -16,39 +16,7 @@ MY CLOUD-(R)EVOLUTION [mycloudrevolution.com](http://mycloudrevolution.com/)
 
 ## Project Content
 
-### Playbook - Veeam_setup.yml
-
-Install Veeam Backup & Replication 9.5 Update 4a in the unattended mode with Ansible. 
-
-Test / Dev Environment:
- * Ansible 2.8
- * CentOS 7
- * Windows Server 2019
-
- ![Veeam Setup](/media/VeeamSetup.png)
-
-### Playbook - Veeam_test.yml
-
-Test Playbook for the Veeam Backup & Replication modules. 
-
-Test / Dev Environment:
- * Ansible 2.8
- * CentOS 7
- * Windows Server 2019
- * Veeam Backup & Replication 9.5 Update 4a
-
- ### Playbook - Veeam_test.yml
-
-Test Playbook to add a new VMware ESXi Server to the Veeam Backup & Replication server. 
-
-Test / Dev Environment:
- * Ansible 2.8
- * CentOS 7
- * Windows Server 2019
- * Veeam Backup & Replication 9.5 Update 4a
- * VMware ESXi 6.7 Update 1
-
- ### Module - veeam_facts
+### Module - veeam_facts
 
 Collect configuration details from your Veeam Backup & Replication Server.
 
@@ -129,3 +97,44 @@ Add and remove Servers (VMware ESXi, VMware vCenter, etc. ) on your Veeam Backup
     debug:
         var: my_facts.veeam_facts.veeam_servers
 ```
+### Playbook - Veeam_setup.yml
+
+Install Veeam Backup & Replication 9.5 Update 4a in the unattended mode with Ansible. 
+
+Test / Dev Environment:
+ * Ansible 2.8
+ * CentOS 7
+ * Windows Server 2019
+
+ ![Veeam Setup](/media/VeeamSetup.png)
+
+### Playbook - Veeam_get_facts.yml
+
+Playbook for gather Veeam Backup & Replication facts. 
+
+Test / Dev Environment:
+ * Ansible 2.8
+ * CentOS 7
+ * Windows Server 2019
+ * Veeam Backup & Replication 9.5 Update 4a
+
+### Playbook - Veeam_add_esxi.yml
+
+Playbook to add a new VMware ESXi Server to the Veeam Backup & Replication server. 
+
+Test / Dev Environment:
+ * Ansible 2.8
+ * CentOS 7
+ * Windows Server 2019
+ * Veeam Backup & Replication 9.5 Update 4a
+ * VMware ESXi 6.7 Update 1
+
+### Playbook - Veeam_add_cred.yml
+
+Playbook to add and remove new credentials to the Veeam Backup & Replication server. 
+
+Test / Dev Environment:
+ * Ansible 2.8
+ * CentOS 7
+ * Windows Server 2019
+ * Veeam Backup & Replication 9.5 Update 4a
