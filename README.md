@@ -91,7 +91,10 @@ Add and remove Servers (VMware ESXi, VMware vCenter, etc. ) on your Veeam Backup
 
 #### Add VMware ESXi Server 
 
+ ![Veeam Add ESXi ](/media/VeeamAddEsxi.png)
+
 ```
+  tasks:
   - name: Add root credential
     veeam_credential:
         state: present
@@ -100,6 +103,9 @@ Add and remove Servers (VMware ESXi, VMware vCenter, etc. ) on your Veeam Backup
         password: "{{ root_password }}"
         description: "Lab User for Standalone Host"
     register: root_cred
+  - name: Debug root credential
+    debug:
+        var: root_cred
   - name: Add esxi server
     veeam_server:
         state: present
@@ -107,4 +113,10 @@ Add and remove Servers (VMware ESXi, VMware vCenter, etc. ) on your Veeam Backup
         credential_id: "{{ root_cred.id }}"
         name: 192.168.1.10
     register: esxi_server
-    ```
+  - name: Get Veeam Facts
+    veeam_connection_facts:
+    register: my_facts
+  - name: Debug Veeam Servers from Facts
+    debug:
+        var: my_facts.veeam_facts.veeam_servers
+```
