@@ -4,12 +4,15 @@
 
 ![Ansible Veeam](/media/AnsibleVeeam.png)
 
+Besides an Ansible Playbook for the unattended installation of Veeam Backup & Replication servers, this repository contains my Ansible modules for the management of Veeam Backup & Replication.
+
+The Veeam modules are based on the Veeam PS cmdlets. 
+
 ### Project Owner
 
 Markus Kraus [@vMarkus_K](https://twitter.com/vMarkus_K)
 
 MY CLOUD-(R)EVOLUTION [mycloudrevolution.com](http://mycloudrevolution.com/)
-
 
 ## Project Content
 
