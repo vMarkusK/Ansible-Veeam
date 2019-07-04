@@ -16,6 +16,12 @@ MY CLOUD-(R)EVOLUTION [mycloudrevolution.com](http://mycloudrevolution.com/)
 
 ## Project Content
 
+To display the documentation of the "non-default" Ansible modules you can use this syntax:
+
+```
+ansible-doc veeam_credential -M /dev/Ansible-Veeam/library/
+```
+
 ### Module - veeam_facts
 
 Collect configuration details from your Veeam Backup & Replication Server.
