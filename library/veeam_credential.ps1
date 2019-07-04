@@ -34,7 +34,6 @@ Function Connect-VeeamServer {
     }
     catch {
         Fail-Json -obj @{} -message  "Failed to load Veeam SnapIn on the target: $($_.Exception.Message)"  
-            
     }
 
     try {

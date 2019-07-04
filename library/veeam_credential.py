@@ -34,7 +34,7 @@ options:
   type:
     description:
     - Set to C(windows) to create new windows credentials.
-    - Set to C(liniux) to create new liniux credentials.
+    - Set to C(linux) to create new liniux credentials.
     - Set to C(standard) to create new standard credentials.
     type: str
     choices: [ windows, linux, standard ]
@@ -47,9 +47,9 @@ options:
     description:
     -  The password
     type: str
-  if:
+  id:
     description:
-    -  The id
+    -  The credential id
     type: str
 '''
 

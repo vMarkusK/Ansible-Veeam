@@ -15,8 +15,7 @@ Function Connect-VeeamServer {
         Add-PSSnapin -PassThru VeeamPSSnapIn -ErrorAction Stop | Out-Null
     }
     catch {
-        Fail-Json -obj @{} -message  "Failed to load Veeam SnapIn on the target: $($_.Exception.Message)"  
-            
+        Fail-Json -obj @{} -message  "Failed to load Veeam SnapIn on the target: $($_.Exception.Message)"     
     }
 
     try {
@@ -78,9 +77,7 @@ try {
 }
 catch {
     Fail-Json -obj $result -message "Failed to get credential details on the target: $($_.Exception.Message)"   
-    
 }
-
 
 # Create result
 $connection_info = @{}
@@ -118,7 +115,6 @@ foreach ($Cred in $CredList) {
     $cred_info["username"] = $cred.username
     $cred_info["encryptedpassword"] = $cred.encryptedpassword
     $cred_info["description"] = $cred.description
-
 
     $result.veeam_facts.veeam_credentials += $cred_info
 }
