@@ -19,7 +19,7 @@ MY CLOUD-(R)EVOLUTION [mycloudrevolution.com](http://mycloudrevolution.com/)
 To display the documentation of the "non-default" Ansible modules you can use this syntax:
 
 ```
-ansible-doc veeam_credential -M /dev/Ansible-Veeam/library/
+ansible-doc veeam_credential -M /<path to the project root folder>/Ansible-Veeam/library/
 ```
 
 ### Module - veeam_facts
