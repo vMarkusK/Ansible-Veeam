@@ -1,6 +1,8 @@
 - name: Add ESXi Host to VBR Server
   hosts: veeam
   gather_facts: no
+  roles:
+  - veeam
   vars:
     root_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256

@@ -1,6 +1,8 @@
 - name: VBR Module Tests
   hosts: veeam
   gather_facts: no
+  roles:
+  - veeam
   vars:
     my_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
