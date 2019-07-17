@@ -1,6 +1,8 @@
 - name: Get all VBR Facts
   hosts: veeam
   gather_facts: no
+  roles:
+  - veeam
   tasks:
   - name: Get Veeam Facts
     veeam_connection_facts:

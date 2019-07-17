@@ -1,6 +1,8 @@
 - name: Add new Credentials to VBR Server
   hosts: veeam
   gather_facts: no
+  roles:
+  - veeam
   vars:
     query: "veeam_facts.veeam_credentials[?id=='{{ my_cred.id }}']"
     my_password: !vault |
