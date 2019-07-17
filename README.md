@@ -16,10 +16,17 @@ MY CLOUD-(R)EVOLUTION [mycloudrevolution.com](http://mycloudrevolution.com/)
 
 ## Project Content
 
+The Ansible Veeam Modules of this Repository are shipped as a Ansible Role now. The [Ansible Veeam Role](https://github.com/mycloudrevolution/veeam) is a GIT submodule of this Repository and is also published on the [Ansible Galaxy](https://galaxy.ansible.com/mycloudrevolution/veeam). 
+
+Installation of the Role:
+```
+ansible-galaxy install mycloudrevolution.veeam 
+```
+
 To display the documentation of the "non-default" Ansible modules you can use this syntax:
 
 ```
-ansible-doc veeam_credential -M /<path to the project root folder>/Ansible-Veeam/library/
+ansible-doc veeam_credential -M /<path to the project root folder>/roles/veeam/library/
 ```
 
 ### Module - veeam_facts
@@ -29,6 +36,8 @@ Collect configuration details from your Veeam Backup & Replication Server.
 Playbook tasks:
 
 ```
+  roles:
+  - veeam
   tasks:
   - name: Get Veeam Facts
     veeam_connection_facts:
@@ -99,6 +108,8 @@ Add and remove credentials on your Veeam Backup & Replication Server.
  ![Veeam Add Credentials ](/media/VeeamAddCred.png)
 
 ```
+  roles:
+  - veeam
   tasks:
   - name: Add Credential
     veeam_credential:
@@ -132,6 +143,8 @@ Add and remove Servers (VMware ESXi, VMware vCenter, etc. ) on your Veeam Backup
  ![Veeam Add ESXi ](/media/VeeamAddEsxi.png)
 
 ```
+  roles:
+  - veeam
   tasks:
   - name: Add root credential
     veeam_credential:
