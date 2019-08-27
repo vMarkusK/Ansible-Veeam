@@ -1,0 +1,38 @@
+- name: Add vCenter Server to VBR Server
+  hosts: veeam
+  gather_facts: no
+  roles:
+  - veeam
+  vars:
+    vcenter_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          64326437376162656265646132333232336333383737303163303232356466386331386263633234
+          3339386364616332313833336663663665373164616661610a303463383266633364363732626135
+          66363464623130663065353437356433653964383861316661373731623061363962633765353962
+          3865656535623863340a626135613933343338356630663866613964373766366139363166616464
+          6636
+  tasks:
+  - name: Add vCenter credential
+    veeam_credential:
+        state: present
+        type: standard
+        username: Administrator@vSphere.local
+        password: "{{ vcenter_password }}"
+        description: "Lab User for vCenter Server"
+    register: vcenter_cred
+  - name: Debug vcenter credential
+    debug:
+        var: vcenter_cred
+  - name: Add vCenter server
+    veeam_server:
+        state: present
+        type: vcenter
+        credential_id: "{{ vcenter_cred.id }}"
+        name: 192.168.234.100
+    register: vcenter_server
+  - name: Get Veeam Facts
+    veeam_connection_facts:
+    register: my_facts
+  - name: Debug Veeam Servers from Facts
+    debug:
+        var: my_facts.veeam_facts.veeam_servers

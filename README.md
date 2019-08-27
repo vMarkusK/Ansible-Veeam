@@ -171,6 +171,41 @@ Add and remove Servers (VMware ESXi, VMware vCenter, etc. ) on your Veeam Backup
     debug:
         var: my_facts.veeam_facts.veeam_servers
 ```
+
+#### Add VMware vCenter Server 
+
+ ![Veeam Add vCenter ](/media/VeeamAddVcenter.png)
+
+ ```
+  roles:
+  - veeam
+  tasks:
+  - name: Add vCenter credential
+    veeam_credential:
+        state: present
+        type: standard
+        username: Administrator@vSphere.local
+        password: "{{ vcenter_password }}"
+        description: "Lab User for vCenter Server"
+    register: vcenter_cred
+  - name: Debug vcenter credential
+    debug:
+        var: vcenter_cred
+  - name: Add vCenter server
+    veeam_server:
+        state: present
+        type: vcenter
+        credential_id: "{{ vcenter_cred.id }}"
+        name: 192.168.234.100
+    register: vcenter_server
+  - name: Get Veeam Facts
+    veeam_connection_facts:
+    register: my_facts
+  - name: Debug Veeam Servers from Facts
+    debug:
+        var: my_facts.veeam_facts.veeam_servers
+```
+
 ### Playbook - Veeam_setup.yml
 
 Install Veeam Backup & Replication 9.5 Update 4a in the unattended mode with Ansible. 
@@ -202,6 +237,17 @@ Test / Dev Environment:
  * Windows Server 2019
  * Veeam Backup & Replication 9.5 Update 4a
  * VMware ESXi 6.7 Update 1
+
+ ### Playbook - Veeam_add_vcenter.yml
+
+Playbook to add a new VMware vCenter Server to the Veeam Backup & Replication server. 
+
+Test / Dev Environment:
+ * Ansible 2.8
+ * CentOS 7
+ * Windows Server 2019
+ * Veeam Backup & Replication 9.5 Update 4a
+ * VMware vCenter 6.7 Update 1
 
 ### Playbook - Veeam_add_cred.yml
 
