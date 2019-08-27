@@ -1,0 +1,23 @@
+- name: Add new Backup Job
+  hosts: veeam
+  gather_facts: no
+  roles:
+  - veeam
+  vars:
+    query: "veeam_facts.veeam_backups[?id=='{{ my_backup.id }}']"
+  tasks:
+  - name: Create Backup Job
+    veeam_backup:
+        state: present
+        type: vi
+        entity: tag
+        tag: "Protection\\\\Default"
+        name: BackupJob01
+        repository: "Default Backup repository"
+    register: my_backup
+  - name: Get Veeam Facts
+    veeam_connection_facts:
+    register: my_facts
+  - name: Debug Veeam Backup Job Facts
+    debug:
+        var: my_facts | json_query(query)

@@ -205,6 +205,13 @@ Add and remove Servers (VMware ESXi, VMware vCenter, etc. ) on your Veeam Backup
     debug:
         var: my_facts.veeam_facts.veeam_servers
 ```
+### Module - veeam_backup
+
+Add and remove Veeam Backup Jobs (Based on various entities).
+
+#### Add VMware Backup Job Based on Tags
+
+ ![Veeam Add Tag Backup ](/media/VeeamAddTagBackup.png)
 
 ### Playbook - Veeam_setup.yml
 
