@@ -1,0 +1,92 @@
+- name: Manage vSphere VM Tags with new Veeam Backup
+  hosts: veeam
+  gather_facts: no
+  roles:
+  - veeam
+  vars:
+    query: "veeam_facts.veeam_backups[?id=='{{ my_backup.id }}']"
+    tag_category: Protection
+    tag_name: DemoApp
+    vm_cluster: cluster01
+    vm_datacenter: lab
+    vm_folder: /{{ vm_datacenter }}/vm/
+    vm_list:  
+      - { name: 'DemoApp01', datastore: 'datastore1', network: 'DPortGroup1', cpu: '1', mem: '256' }
+      - { name: 'DemoApp02', datastore: 'datastore1', network: 'DPortGroup2', cpu: '1', mem: '256' }
+  tasks:
+    - name: Create new vSphere VMs
+      vmware_guest:
+            hostname: "{{ vcenter_hostname }}"
+            username: "{{ vcenter_username }}"
+            password: "{{ vcenter_password }}"
+            validate_certs: no
+            datacenter: "{{ vm_datacenter }}"
+            cluster: "{{ vm_cluster }}"
+            folder: "{{ vm_folder }}"
+            name: "{{ item.name }}"
+            state: poweredoff
+            guest_id: centos64Guest
+            datastore: "{{ item.datastore }}"
+            disk:
+            - size_gb: 10
+              type: thin
+            hardware:
+              memory_mb: "{{ item.mem }}"
+              num_cpus: "{{ item.cpu }}"
+              scsi: paravirtual
+              boot_firmware: efi
+            networks:
+            - name: "{{ item.network }}"
+              device_type: vmxnet3
+            customvalues:
+            - key: "svga.vgaOnly"
+              Value: true
+      delegate_to: localhost
+      with_items:  "{{ vm_list }}"
+    - name: Get category id from the given tag
+      vmware_tag_facts:
+        hostname: '{{ vcenter_hostname }}'
+        username: '{{ vcenter_username }}'
+        password: '{{ vcenter_password }}'
+        validate_certs: no
+      register: tag_details
+      delegate_to: localhost
+    - name: Create Tag for '{{ tag_name }}'
+      vmware_tag:
+        hostname: '{{ vcenter_hostname }}'
+        username: '{{ vcenter_username }}'
+        password: '{{ vcenter_password }}'
+        validate_certs: no
+        category_id: "{{ tag_details.tag_facts['Default']['tag_category_id'] }}"
+        tag_name: '{{ tag_name }}'
+        state: present
+      delegate_to: localhost
+    - name: Add Tag '{{ tag_name }}' to VMs
+      vmware_tag_manager:
+        hostname: '{{ vcenter_hostname }}'
+        username: '{{ vcenter_username }}'
+        password: '{{ vcenter_password }}'
+        validate_certs: no
+        tag_names:
+          - "{{ tag_category }}:{{ tag_name }}"
+        object_name: "{{ item.name }}"
+        object_type: VirtualMachine
+        state: add
+      with_items:  "{{ vm_list }}"
+      delegate_to: localhost
+    - name: Create Backup Job
+      veeam_backup:
+        state: present
+        type: vi
+        entity: tag
+        tag: "{{ tag_category }}\\\\{{ tag_name }}"
+        name: "Backup_{{ tag_name }}"
+        repository: "Default Backup repository"
+      register: my_backup
+    - name: Get Veeam Facts
+      veeam_connection_facts:
+      register: my_facts
+    - name: Debug Veeam Backup Job Facts
+      debug:
+        var: my_facts | json_query(query)
+      
