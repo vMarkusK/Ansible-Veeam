@@ -1,10 +1,9 @@
-- name: VBR Community Edition Setup
+- name: Veeam Backup & Replication Community Edition Setup
   hosts: veeam
   gather_facts: no
-  vars:
-    vbr_setup: true
-    vbr_update: true
-    one_setup: false
+  vbr_setup: true
+  vbr_update: true
+  one_setup: false
+  one_update: false
   roles:
     - veeam_setup
-
