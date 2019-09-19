@@ -1,0 +1,10 @@
+- name: VBR Community Edition Setup
+  hosts: veeam
+  gather_facts: no
+  vars:
+    vbr_setup: true
+    vbr_update: true
+    one_setup: false
+  roles:
+    - veeam_setup
+
