@@ -1,0 +1,10 @@
+- name: Veeam ONE Setup
+  hosts: veeam
+  gather_facts: no
+  vars:
+    vbr_setup: false
+    vbr_update: false
+    one_setup: true
+  roles:
+    - veeam_setup
+
