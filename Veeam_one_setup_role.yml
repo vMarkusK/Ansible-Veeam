@@ -1,10 +1,11 @@
 - name: Veeem ONE Free Edition Setup
   hosts: veeam
   gather_facts: no
-  vbr_setup: false
-  vbr_update: false
-  one_setup: true
-  one_update: true
+  vars:
+    vbr_setup: false
+    vbr_update: false
+    one_setup: true
+    one_update: true
   roles:
     - veeam_setup
 
