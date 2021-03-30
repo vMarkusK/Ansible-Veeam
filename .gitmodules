@@ -1,6 +1,6 @@
 [submodule "roles/veeam"]
 	path = roles/veeam
-	url = https://github.com/mycloudrevolution/veeam.git
+	url = https://github.com/vmarkusk/veeam.git
 [submodule "roles/veeam_setup"]
 	path = roles/veeam_setup
-	url = https://github.com/mycloudrevolution/veeam_setup.git
+	url = https://github.com/vmarkusk/veeam_setup.git

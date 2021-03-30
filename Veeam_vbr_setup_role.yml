@@ -2,8 +2,9 @@
   hosts: veeam
   gather_facts: no
   vars:
+    vbr_source: "E:\\"
     vbr_setup: true
-    vbr_update: true
+    vbr_update: false
     one_setup: false
     one_update: false
   roles:
